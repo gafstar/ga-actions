@@ -16,10 +16,9 @@ jobs:
           ls ${{ github.workspace }}
       - run: echo "🍏 This job's status is ${{ job.status }}."
 
-# name: sqlfluff with reviewdog
-# on:
-#   pull_request:
-# jobs:
+on:
+  pull_request:
+jobs:
   test-check:
     name: runner / sqlfluff (github-check)
     runs-on: ubuntu-latest
@@ -34,13 +33,9 @@ jobs:
           sqlfluff_command: "fix" # Or "lint"
           config: "${{ github.workspace }}/.sqlfluff"
           paths: '${{ github.workspace }}/models'
+          github_base_ref: "main"     <========================
       - name: 'Show outputs (Optional)'
         shell: bash
         run: |
-          SQL_FILE_PATTERN="${FILE_PATTERN:?}"
-          SOURCE_REFERENCE="origin/${GITHUB_PULL_REQUEST_BASE_REF:?}"
-          changed_files=$(git diff --name-only --no-color "$SOURCE_REFERENCE" "HEAD" -- "${SQLFLUFF_PATHS:?}" |
-            grep -e "${SQL_FILE_PATTERN:?}" |
-            xargs -I% bash -c 'if [[ -f "%" ]] ; then echo "%"; fi' || :)
           echo '${{ steps.lint-sql.outputs.sqlfluff-results }}' | jq -r '.'
           echo '${{ steps.lint-sql.outputs.sqlfluff-results-rdjson }}' | jq -r '.'
