@@ -35,7 +35,7 @@ jobs:
           paths: '${{ github.workspace }}/models'
           github_base_ref: "main"     
       - name: 'Show outputs (Optional)'
-        shell: bash
+        shell: bash 
         run: |
           echo '${{ steps.lint-sql.outputs.sqlfluff-results }}' | jq -r '.'
-          echo '${{ steps.lint-sql.outputs.sqlfluff-results-rdjson }}' | jq -r '.'
+          echo '${{ steps.lint-sql.outputs.sqlfluff-results-rdjson }}' | jq -r '.'   
